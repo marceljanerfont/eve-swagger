@@ -63,13 +63,15 @@ def validate_security_definitions():
             'valueschema': {'type': 'dict', 'oneof': [
                 {  # basic
                     'schema': {
-                        'type': {'required': True, 'type': 'string', 'allowed': ['basic']},
+                        'type': {'required': True, 'type': 'string',
+                                 'allowed': ['basic']},
                         'description': {'type': 'string'}
                     }
                 },
                 {  # apiKey
                     'schema': {
-                        'type': {'required': True, 'type': 'string', 'allowed': ['apiKey']},
+                        'type': {'required': True, 'type': 'string',
+                                 'allowed': ['apiKey']},
                         'description': {'type': 'string'},
                         'name': {'required': True, 'type': 'string'},
                         'in': {'required': True, 'type': 'string'}
@@ -77,38 +79,58 @@ def validate_security_definitions():
                 },
                 {  # oauth2: 'implicit',
                     'schema': {
-                        'type': {'required': True, 'type': 'string', 'allowed': ['oauth2']},
+                        'type': {'required': True, 'type': 'string',
+                                 'allowed': ['oauth2']},
                         'description': {'type': 'string'},
-                        'flow': {'required': True, 'type': 'string', 'allowed': ['implicit']},
-                        'authorizationUrl': {'required': True, 'type': 'string', 'validator': _validate_url},
-                        'scopes': {'required': True, 'type': 'dict'}  # TODO probably too weak
+                        'flow': {'required': True, 'type': 'string',
+                                 'allowed': ['implicit']},
+                        'authorizationUrl': {'required': True,
+                                             'type': 'string',
+                                             'validator': _validate_url},
+                        # TODO probably too weak
+                        'scopes': {'required': True, 'type': 'dict'}
                     }
                 },
                 {  # oauth2: 'password', 'application'
                     'schema': {
-                        'type': {'required': True, 'type': 'string', 'allowed': ['oauth2']},
+                        'type': {'required': True, 'type': 'string',
+                                 'allowed': ['oauth2']},
                         'description': {'type': 'string'},
-                        'flow': {'required': True, 'type': 'string', 'allowed': ['password', 'application']},
-                        'tokenUrl': {'required': True, 'type': 'string', 'validator': _validate_url},
-                        'scopes': {'required': True, 'type': 'dict'}  # TODO probably too weak
+                        'flow': {'required': True, 'type': 'string',
+                                 'allowed': ['password', 'application']},
+                        'tokenUrl': {'required': True, 'type': 'string',
+                                     'validator': _validate_url},
+                        # TODO probably too weak
+                        'scopes': {'required': True, 'type': 'dict'}
                     }
                 },
                 {  # oauth2 'accessCode'
                     'schema': {
-                        'type': {'required': True, 'type': 'string', 'allowed': ['oauth2']},
+                        'type': {'required': True, 'type': 'string',
+                                 'allowed': ['oauth2']},
                         'description': {'type': 'string'},
-                        'flow': {'required': True, 'type': 'string', 'allowed': ['accessCode']},
-                        'authorizationUrl': {'required': True, 'type': 'string', 'validator': _validate_url},
-                        'tokenUrl': {'required': True, 'type': 'string', 'validator': _validate_url},
-                        'scopes': {'required': True, 'type': 'dict'}  # TODO probably too weak
+                        'flow': {'required': True, 'type': 'string',
+                                 'allowed': ['accessCode']},
+                        'authorizationUrl': {'required': True,
+                                             'type': 'string',
+                                             'validator': _validate_url},
+                        'tokenUrl': {'required': True, 'type': 'string',
+                                     'validator': _validate_url},
+                        # TODO probably too weak
+                        'scopes': {'required': True, 'type': 'dict'}
                     }
                 }]
             }
         }
     }
     if eve_swagger.SECURITY_DEFINITIONS in app.config:
-        if not v.validate({'securityDefinitions': app.config[eve_swagger.SECURITY_DEFINITIONS]}, schema):
-            raise ConfigException('%s is misconfigured: %s definitions: %s' % (eve_swagger.SECURITY_DEFINITIONS, v.errors, app.config[eve_swagger.SECURITY_DEFINITIONS]))
+        document = {
+            'securityDefinitions': app.config[eve_swagger.SECURITY_DEFINITIONS]
+        }
+        if not v.validate(document, schema):
+            raise ConfigException('%s is misconfigured: %s definitions: %s' % (
+                eve_swagger.SECURITY_DEFINITIONS, v.errors,
+                app.config[eve_swagger.SECURITY_DEFINITIONS]))
 
 
 def _validate_url(field, value, error):
