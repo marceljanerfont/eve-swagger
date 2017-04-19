@@ -120,7 +120,7 @@ def responses():
 
 
 def security_definitions():
-    if app.config[eve_swagger.SECURITY_DEFINITIONS]:
+    if eve_swagger.SECURITY_DEFINITIONS in app.config:
         validate_security_definitions()
         return app.config[eve_swagger.SECURITY_DEFINITIONS]
 
