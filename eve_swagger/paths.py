@@ -55,6 +55,11 @@ def _resource(resource, rd, methods):
             if hook_desc != '':
                 item[m.lower()]['description'] = '**Hooks**:' + hook_desc
 
+    # add security
+    if app.auth:
+        for m in methods:
+            item[m.lower()]['security'] = [{app.auth.__class__.__name__: []}]
+
     return item
 
 
@@ -75,6 +80,11 @@ def _item(resource, rd, methods):
             hook_desc = _hook_descriptions(resource, m, item=True)
             if hook_desc != '':
                 item[m.lower()]['description'] = '**Hooks**:' + hook_desc
+
+    # add security
+    if app.auth:
+        for m in methods:
+            item[m.lower()]['security'] = [{app.auth.__class__.__name__: []}]
 
     return item
 

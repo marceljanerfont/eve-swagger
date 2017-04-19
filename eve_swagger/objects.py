@@ -12,7 +12,7 @@ from flask import request, current_app as app
 
 import eve_swagger
 from eve_swagger import OrderedDict
-from .validation import validate_info
+from .validation import validate_info, validate_security_definitions
 
 
 def info():
@@ -120,7 +120,9 @@ def responses():
 
 
 def security_definitions():
-    pass
+    if app.config[eve_swagger.SECURITY_DEFINITIONS]:
+        validate_security_definitions()
+        return app.config[eve_swagger.SECURITY_DEFINITIONS]
 
 
 def security():

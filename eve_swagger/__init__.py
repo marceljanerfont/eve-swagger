@@ -15,3 +15,4 @@ from .swagger import swagger, add_documentation  # noqa
 
 INFO = 'SWAGGER_INFO'
 HOST = 'SWAGGER_HOST'
+SECURITY_DEFINITIONS = 'SWAGGER_SECURITY_DEFINITIONS'
